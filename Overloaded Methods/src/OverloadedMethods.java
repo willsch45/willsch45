@@ -8,8 +8,8 @@ public class OverloadedMethods {
 		System.out.println("Double mean: " + Mean(doubleValues));
 		System.out.println("Integer median: " + Median(integerValues));
 		System.out.println("Double median: " + Median(doubleValues));
-		// System.out.println("Integer mode: " + Mode(integerValues));
-		// System.out.println("Double mode: " + Mode(doubleValues));
+		System.out.println("Integer mode: " + Mode(integerValues));
+		System.out.println("Double mode: " + Mode(doubleValues));
 	}
 
 	public static int[] Copy(int[] values) {
@@ -111,7 +111,7 @@ public class OverloadedMethods {
 	// TODO: overload median and mode so that it works with an array of doubles
 
 	public static double Median(int[] values) {
-		double median = 0;
+		int median = 0;
 
 		int[] copy = Copy(values);
 		Sort(copy);
@@ -144,5 +144,53 @@ public class OverloadedMethods {
 		}
 
 		return median;
+	}
+
+	public static int Mode(int[] values) {
+		int[] counterarr = new int[values.length];
+
+		for (int x = 0; x < values.length; x++) {
+			int test = values[x];
+			int counter = 0;
+			for (int y = x; y < values.length; y++) {
+				if (values[y] == test) {
+					counter++;
+				}
+			}
+			counterarr[x] = counter;
+		}
+
+		int start = 0;
+		for (int idx = 0; idx < counterarr.length; idx++) {
+			if (counterarr[start] < counterarr[idx]) {
+				start = idx;
+			}
+		}
+
+		return values[start];
+	}
+
+	public static double Mode(double[] values) {
+		int[] counterarr = new int[values.length];
+
+		for (int x = 0; x < values.length; x++) {
+			double test = values[x];
+			int counter = 0;
+			for (int y = x; y < values.length; y++) {
+				if (values[y] == test) {
+					counter++;
+				}
+			}
+			counterarr[x] = counter;
+		}
+
+		int start = 0;
+		for (int idx = 0; idx < counterarr.length; idx++) {
+			if (counterarr[start] < counterarr[idx]) {
+				start = idx;
+			}
+		}
+
+		return values[start];
 	}
 }
