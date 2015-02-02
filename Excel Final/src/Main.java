@@ -172,11 +172,6 @@ public class Main {
 			Exporter(Array, input);
 		} else if (input.contains("import") == true) {
 			Importer(Array, input);
-		} else if (input.contains("width") == true) {// should be in form
-														// width/height = x
-			changew(input);
-		} else if (input.contains("height") == true) {
-			changew(input);
 		} else {
 			System.out.println(task);
 		}
@@ -259,14 +254,6 @@ public class Main {
 		}
 
 		return Array;
-	}
-
-	public static void changew(String input) {// ask about this and changeh
-		width = Integer.parseInt(input.substring(input.indexOf('=') + 2));
-	}
-
-	public static void changeh(String input) {
-		height = Integer.parseInt(input.substring(input.indexOf('=') + 2));
 	}
 
 	public static String dataTyper(Cellobj[][] Array, String input) {
