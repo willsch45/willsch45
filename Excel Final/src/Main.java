@@ -4,6 +4,9 @@ import java.io.PrintStream;
 import java.util.Scanner;
 
 public class Main {
+	// Add isDouble method and massage into dataTyper method
+	// Add protocol to print cell formula below spreadsheet while importing b/c
+	// apparently we need to maintain the formula
 
 	public static int width = 17;
 	public static int height = 14;
@@ -259,6 +262,8 @@ public class Main {
 	public static String dataTyper(Cellobj[][] Array, String input) {
 		if (isint(input) == true) {
 			return "int";
+		} else if (isdouble(input) == true) {
+			return "double";
 		} else if (isdate(input) == true) {
 			return "date";
 		} else if (isformula(Array, input) == true) {
@@ -285,6 +290,16 @@ public class Main {
 		try {
 			int x;
 			x = Integer.parseInt(input);
+			return true;
+		} catch (Exception err) {
+			return false;
+		}
+	}
+
+	public static boolean isdouble(String input) {
+		try {
+			double x;
+			x = Double.parseDouble(input);
 			return true;
 		} catch (Exception err) {
 			return false;
@@ -452,9 +467,9 @@ public class Main {
 	}
 
 	public static double Average(Cellobj[][] Array, String input) {
-		Cell goal = new Cell(input.substring(0, input.indexOf(' ')));
-		input = input.substring(input.indexOf('g') + 3, input.indexOf('>'));
-		Cell[] storage = cellrgspaces(input);
+		String finder = input.substring(input.indexOf('g'));
+		input = input.substring(finder.indexOf('<') + 1, finder.indexOf('>'));
+		Cell[] storage = cellrange(finder);
 		Cell c1 = storage[0];
 		Cell c2 = storage[1];
 		double avg = 0;
@@ -504,49 +519,43 @@ public class Main {
 
 	public static Cellobj[][] setformula(Cellobj[][] Array, String input) {
 		Cell goal = new Cell(input.substring(0, input.indexOf(' ')));
-		if (input.contains("Sum") == true) {
-			int start = input.indexOf('S');
-			int end = input.indexOf('>');
-			double sum = Sum(Array, input);
-			String result = input.substring(0, start) + sum
-					+ input.substring(end + 1);
-
-			if (input.contains(">)") == true && input.contains("(<") == true) {
-				Formula f1 = new Formula(Array, result);
-				Cell c1 = new Cell(input.substring(0, input.indexOf(' ')));
-				Array[c1.h][c1.v] = new Cellobj(f1);
-				Array[c1.h][c1.v].commandsequence = input.substring(
-						input.indexOf('(') + 2, input.indexOf(')') - 1);
-				System.out.println(input);
-				System.out.println(Array[c1.h][c1.v].commandsequence);
-			} else {
-				Array[goal.h][goal.v] = new Cellobj(sum);
-				Array[goal.h][goal.v].DataType = "Formula";
-				Array[goal.h][goal.v].commandsequence = input;
-			}
-
-		} else if (input.contains("Average") == true) {
-			int start = input.indexOf('v') - 1;
-			int end = input.indexOf('>');
-			double avg = Average(Array, input);
-			String result = input.substring(0, start) + avg
-					+ input.substring(end + 1);
-
-			if (input.contains(">)") == true && input.contains("(<") == true) {
-				System.out.println(result);
-				Formula f1 = new Formula(Array, result);
-				Cell c1 = new Cell(input.substring(0, input.indexOf(' ')));
-				Array[c1.h][c1.v] = new Cellobj(f1);
-				Array[c1.h][c1.v].commandsequence = input.substring(
-						input.indexOf('(') + 2, input.indexOf(')') - 1);
-				System.out.println(input);
-				System.out.println(Array[c1.h][c1.v].commandsequence);
-			} else {
-				Array[goal.h][goal.v] = new Cellobj(avg);
-				Array[goal.h][goal.v].DataType = "Formula";
-				Array[goal.h][goal.v].commandsequence = input;
-			}
-		} else if (isformula(Array, input) == false) {
+		/*
+		 * if (input.contains("Sum") == true) { String finder =
+		 * input.substring(input.indexOf('S')); int start = input.indexOf('S');
+		 * int end = finder.indexOf('>') + input.indexOf('S'); double sum =
+		 * Sum(Array, input); String result = input.substring(0, start) + sum +
+		 * input.substring(end + 1); setformula(Array, result);
+		 * 
+		 * if (input.contains(">)") == true && input.contains("(<") == true) {
+		 * Formula f1 = new Formula(Array, result); Cell c1 = new
+		 * Cell(input.substring(0, input.indexOf(' '))); Array[c1.h][c1.v] = new
+		 * Cellobj(f1); Array[c1.h][c1.v].commandsequence = input.substring(
+		 * input.indexOf('(') + 2, input.indexOf(')') - 1);
+		 * System.out.println(input);
+		 * System.out.println(Array[c1.h][c1.v].commandsequence); } else {
+		 * Array[goal.h][goal.v] = new Cellobj(sum);
+		 * Array[goal.h][goal.v].DataType = "Formula";
+		 * Array[goal.h][goal.v].commandsequence = input; }
+		 * 
+		 * } else if (input.contains("Average") == true) { String finder =
+		 * input.substring(input.indexOf('v')); int start = input.indexOf('v') -
+		 * 1; int end = finder.indexOf('>') + input.indexOf('v'); double avg =
+		 * Average(Array, input); String result = input.substring(0, start) +
+		 * avg + input.substring(end + 1); setformula(Array, result);
+		 * 
+		 * if (input.contains(">)") == true && input.contains("(<") == true) {
+		 * System.out.println(result); Formula f1 = new Formula(Array, result);
+		 * Cell c1 = new Cell(input.substring(0, input.indexOf(' ')));
+		 * Array[c1.h][c1.v] = new Cellobj(f1);
+		 * Array[c1.h][c1.v].commandsequence = input.substring(
+		 * input.indexOf('(') + 2, input.indexOf(')') - 1);
+		 * System.out.println(input);
+		 * System.out.println(Array[c1.h][c1.v].commandsequence); } else {
+		 * Array[goal.h][goal.v] = new Cellobj(avg);
+		 * Array[goal.h][goal.v].DataType = "Formula";
+		 * Array[goal.h][goal.v].commandsequence = input; }
+		 */
+		if (isformula(Array, input) == false) {
 			System.out
 					.println("Operation could not be completed due to a circular refrence");
 		} else {
@@ -558,8 +567,9 @@ public class Main {
 	}
 
 	public static double Sum(Cellobj[][] Array, String input) {
-		input = input.substring(input.indexOf('m') + 2, input.indexOf('>'));
-		Cell[] storage = cellrgspaces(input);
+		String finder = input.substring(input.indexOf('m'));
+		input = input.substring(finder.indexOf('<') + 1, finder.indexOf('>'));
+		Cell[] storage = cellrange(finder);
 		Cell c1 = storage[0];
 		Cell c2 = storage[1];
 		double sum = 0;
@@ -621,6 +631,8 @@ public class Main {
 			return;
 		}
 
+		int counter = 0;
+
 		for (int vert = 0; vert < height; vert++) {
 			for (int hor = 0; hor < width; hor++) {
 				if (Array[hor][vert].output.length() == 0) {
@@ -659,6 +671,16 @@ public class Main {
 			}
 			p.println("");
 		}
+
+		p.println("Formulas:");
+
+		for (int vert = 0; vert < height; vert++) {
+			for (int hor = 0; hor < width; hor++) {
+				if (Array[hor][vert].DataType.equals("formula")) {
+					p.println(Array[hor][vert].internalformula.original);
+				}
+			}
+		}
 	}
 
 	public static void Importer(Cellobj[][] Array, String input) {
@@ -678,24 +700,32 @@ public class Main {
 		for (double vert = 0; s.hasNext() == true; vert += .5) {
 			int horz = 0;
 			String x = s.nextLine();
-			for (int y = 1; y < x.length(); y++) {
-				if (x.charAt(y) == '|') {
-					String contents = x.substring(y - 10, y);
-					contents = contents.trim();
-					String type = dataTyper(Array, contents);
-					if (type.equals("int")) {
-						Array[horz][(int) vert] = new Cellobj(
-								Integer.parseInt(contents));
-					} else if (type.equals("date")) {
-						Array[horz][(int) vert] = new Cellobj(
-								new Date(contents));
-					} else {// string
-						Array[horz][(int) vert] = new Cellobj(contents);
+			if (x.charAt(0) == '|' || x.charAt(0) == '-') {
+				for (int y = 1; y < x.length(); y++) {
+					if (x.charAt(y) == '|') {
+						String contents = x.substring(y - 10, y);
+						contents = contents.trim();
+						String type = dataTyper(Array, contents);
+						if (type.equals("int")) {
+							Array[horz][(int) vert] = new Cellobj(
+									Integer.parseInt(contents));
+						} else if (type.equals("date")) {
+							Array[horz][(int) vert] = new Cellobj(new Date(
+									contents));
+						} else {// string
+							Array[horz][(int) vert] = new Cellobj(contents);
+						}
+
+						horz++;
 					}
 
-					horz++;
 				}
-
+			} else {
+				if (x.charAt(0) == 'F') {
+					// do nothing if line is "Formula"
+				} else {
+					setformula(Array, x);
+				}
 			}
 		}
 

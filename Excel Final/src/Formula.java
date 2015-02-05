@@ -9,19 +9,26 @@ public class Formula {
 	public Formula(Cellobj[][] Array, String input) {
 		original = input;
 		goal = new Cell(input.substring(0, input.indexOf(' ')));
-		cmdsq = input.substring(input.indexOf('<'), input.indexOf('>') + 1);
-		realvals = cmdsq;
+		cmdsq = input.substring(input.indexOf('<'), input.length() - 1);
 		circle = false;
 		// count through string to identify cells
+		while (cmdsq.contains("Average")) {
+			cmdsq = Average(Array);
+		}
+
+		while (cmdsq.contains("Sum")) {
+			cmdsq = Sum(Array);
+		}
+
+		realvals = cmdsq;
 		for (int idx = 0; idx < cmdsq.length(); idx++) {
 			if (realvals.charAt(idx) >= 65 && realvals.charAt(idx) <= 90) {
 				if (realvals.charAt(idx + 2) == ' '
 						|| realvals.charAt(idx + 2) == '>') {// i.e. A1
 					Cell c1 = new Cell(realvals.substring(idx, idx + 2));
 					if (c1.h == goal.h && c1.v == goal.v) {
-						System.out
-								.println("Circular Refrence detected within formula");
 						circle = true;
+						return;
 					} else {
 						String value = Array[c1.h][c1.v].output;
 						realvals = realvals.substring(0, idx) + value
@@ -30,8 +37,6 @@ public class Formula {
 				} else {// i.e. A11
 					Cell c1 = new Cell(realvals.substring(idx, idx + 3));
 					if (c1.h == goal.h && c1.v == goal.v) {
-						System.out
-								.println("Circular Refrence detected within formula");
 						circle = true;
 						return;
 					} else {
@@ -64,7 +69,7 @@ public class Formula {
 		}
 	}
 
-	public static double Arraymath(String[] arr) {
+	public double Arraymath(String[] arr) {
 		for (int x = 0; x < arr.length; x++) {
 			if (arr[x].equals("*")) {
 				double newval = (Double.parseDouble(arr[x - 1]))
@@ -100,5 +105,110 @@ public class Formula {
 		double Final = Double.parseDouble(arr[arr.length - 1]);
 
 		return Final;
+	}
+
+	public String Average(Cellobj[][] Array) {
+		String finder = cmdsq.substring(cmdsq.indexOf('v') - 1);
+		String rangefinder = finder.substring(finder.indexOf('<'),
+				finder.indexOf('>') + 1);
+		Cell[] storage = Main.cellrange(rangefinder);
+		Cell c1 = storage[0];
+		Cell c2 = storage[1];
+		double avg = 0;
+
+		int columns = (c2.h - c1.h) + 1;
+		int rows = (c2.v - c1.v) + 1;
+
+		double[] total = new double[(columns) * rows];
+
+		for (int idx = 0; idx <= columns - 1; idx++) {// keep eye on this,
+														// might
+														// need to start at
+														// 1
+			double[] arr = new double[rows];
+
+			int x = 0;
+
+			for (int i = c1.v; i <= c2.v; i++) {
+				arr[x] = Array[c1.h + idx][i].internaldouble;
+				x++;
+			}
+
+			int y = 0;
+
+			for (int idy = 0; idy < arr.length; idy++) {
+				total[y] = arr[idy];
+				y++;
+			}
+		}
+
+		avg = averager(total);
+
+		int start = cmdsq.indexOf('v') - 1;
+		int end = finder.indexOf('>') + cmdsq.indexOf('v');
+		return cmdsq.substring(0, start) + avg + cmdsq.substring(end);
+
+	}
+
+	public double averager(double[] arr) {
+		double result = arr[0];
+		for (int x = 1; x < arr.length; x++) {
+			result += arr[x];
+		}
+
+		result = result / (arr.length);
+
+		return result;
+	}
+
+	public String Sum(Cellobj[][] Array) {
+		String finder = cmdsq.substring(cmdsq.indexOf('m') - 2);
+		String rangefinder = finder.substring(finder.indexOf('<'),
+				finder.indexOf('>') + 1);
+		Cell[] storage = Main.cellrange(rangefinder);
+		Cell c1 = storage[0];
+		Cell c2 = storage[1];
+		double sum = 0;
+
+		int columns = (c2.h - c1.h) + 1;
+		int rows = (c2.v - c1.v) + 1;
+
+		double[] total = new double[(columns) * rows];
+
+		for (int idx = 0; idx <= columns - 1; idx++) {// keep eye on this,
+														// might
+														// need to start at
+														// 1
+			double[] arr = new double[rows];
+
+			int x = 0;
+
+			for (int i = c1.v; i <= c2.v; i++) {
+				arr[x] = Array[c1.h + idx][i].internaldouble;
+				x++;
+			}
+
+			int y = 0;
+
+			for (int idy = 0; idy < arr.length; idy++) {
+				total[y] = arr[idy];
+				y++;
+			}
+		}
+
+		sum = summer(total);
+
+		int start = cmdsq.indexOf('m') - 2;
+		int end = finder.indexOf('>') + cmdsq.indexOf('m');
+		return cmdsq.substring(0, start) + sum + " " + cmdsq.substring(end);
+	}
+
+	public double summer(double[] arr) {
+		double result = arr[0];
+		for (int x = 1; x < arr.length; x++) {
+			result += arr[x];
+		}
+
+		return result;
 	}
 }
