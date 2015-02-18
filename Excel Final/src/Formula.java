@@ -30,32 +30,22 @@ public class Formula {
 		}
 
 		realvals = cmdsq;
-		for (int idx = 0; idx < cmdsq.length(); idx++) {
-			if (realvals.charAt(idx) >= 65 && realvals.charAt(idx) <= 90) {
-				if (realvals.charAt(idx + 2) == ' '
-						|| realvals.charAt(idx + 2) == '>') {// i.e. A1
-					Cell c1 = new Cell(realvals.substring(idx, idx + 2));
-					if (c1.h == goal.h && c1.v == goal.v) {
-						circle = true;
-						return;
-					} else {
-						String value = Array[c1.h][c1.v].output;
-						realvals = realvals.substring(0, idx) + value
-								+ realvals.substring(idx + 2);
-					}
-				} else {// i.e. A11
-					Cell c1 = new Cell(realvals.substring(idx, idx + 3));
-					if (c1.h == goal.h && c1.v == goal.v) {
-						circle = true;
-						return;
-					} else {
-						String value = Array[c1.h][c1.v].output;
-						realvals = realvals.substring(0, idx) + value
-								+ realvals.substring(idx + 3);
-					}
-				}
-			}
-		}
+
+		realvalgenerator(Array);
+		/*
+		 * for (int idx = 0; idx < cmdsq.length(); idx++) { if
+		 * (realvals.charAt(idx) >= 65 && realvals.charAt(idx) <= 90) { if
+		 * (realvals.charAt(idx + 2) == ' ' || realvals.charAt(idx + 2) == '>')
+		 * {// i.e. A1 Cell c1 = new Cell(realvals.substring(idx, idx + 2)); idx
+		 * = 0; if (c1.h == goal.h && c1.v == goal.v) { circle = true; return; }
+		 * else { String value = Array[c1.h][c1.v].output; realvals =
+		 * realvals.substring(0, idx) + value + realvals.substring(idx + 2); } }
+		 * else {// i.e. A11 Cell c1 = new Cell(realvals.substring(idx, idx +
+		 * 3)); idx = 0; if (c1.h == goal.h && c1.v == goal.v) { circle = true;
+		 * return; } else { String value = Array[c1.h][c1.v].output; realvals =
+		 * realvals.substring(0, idx) + value + realvals.substring(idx + 3); } }
+		 * } }
+		 */
 
 		if (circle == false) {
 			/*
@@ -73,6 +63,38 @@ public class Formula {
 			String[] temp = Parserealvals();
 			result = Arraymath(temp);
 		}
+	}
+
+	public void realvalgenerator(Cellobj[][] Array) {
+		// counts through realvals
+		String test = realvals;
+		for (int x = 0; x < test.length(); x++) {
+			if (test.charAt(x) >= 65 && test.charAt(x) <= 90) {// finds
+																// a
+																// cell
+				String t = test.substring(x);
+				int end;
+				if (t.indexOf(' ') == -1) {
+					end = x + t.indexOf('>');
+				} else {
+					end = x + t.indexOf(' ');
+				}
+				String foundCell = test.substring(x, end);
+				Cell c = new Cell(foundCell);
+				if (c.v == goal.v && c.h == goal.h) {
+					circle = true;
+					return;
+				}
+
+				String value = Array[c.h][c.v].output;
+				String newTest;
+				newTest = test.substring(0, x) + value + test.substring(end);
+				test = newTest;
+				x = end - 1;
+			}
+		}
+
+		realvals = test;
 	}
 
 	/*
@@ -262,7 +284,7 @@ public class Formula {
 			}
 		}
 
-		double Final = Double.parseDouble(arr[arr.length - 1]);
+		double Final = Double.parseDouble(arr[0]);
 
 		return Final;
 	}

@@ -5,7 +5,7 @@ public class Cellobj {
 	public char internalchar;
 	public Formula internalformula;
 	public static String commandsequence;
-	public double internaldouble;
+	public double internaldouble = 0.0;
 	public String output;
 	public String DataType;
 

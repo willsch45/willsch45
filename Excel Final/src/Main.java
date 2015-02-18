@@ -5,8 +5,6 @@ import java.util.Scanner;
 
 public class Main {
 	// Add isDouble method and massage into dataTyper method
-	// Add protocol to print cell formula below spreadsheet while importing b/c
-	// apparently we need to maintain the formula
 
 	public static int width = 17;
 	public static int height = 14;
@@ -266,24 +264,26 @@ public class Main {
 			return "double";
 		} else if (isdate(input) == true) {
 			return "date";
-		} else if (isformula(Array, input) == true) {
-			return "formula";
 		} else {
 			return "string";
 		}
 	}
 
-	public static boolean isformula(Cellobj[][] Array, String input) {
-		try {
-			Formula f1 = new Formula(Array, input);
-			if (f1.circle == true) {
-				return false;
-			} else {
-				return true;
-			}
-		} catch (Exception err) {
-			return false;
+	public static boolean[] isformula(Cellobj[][] Array, String input) {
+		boolean[] conditions = { true, false };
+		// {isformula?, iscircle?}
+		// try {
+		Formula f1 = new Formula(Array, input);
+		if (f1.circle == true) {
+			conditions[1] = true;
+			return conditions;
+		} else {
+			return conditions;
 		}
+		// } catch (Exception err) {
+		// conditions[0] = false;
+		// return conditions;
+		// }
 	}
 
 	public static boolean isint(String input) {
@@ -555,9 +555,11 @@ public class Main {
 		 * Array[goal.h][goal.v].DataType = "Formula";
 		 * Array[goal.h][goal.v].commandsequence = input; }
 		 */
-		if (isformula(Array, input) == false) {
+		if (isformula(Array, input)[1] == true) {
 			System.out
 					.println("Operation could not be completed due to a circular refrence");
+		} else if (isformula(Array, input)[0] == false) {
+			System.out.println("Operation is not a functional formula");
 		} else {
 			Formula f1 = new Formula(Array, input);
 			Cell c1 = new Cell(input.substring(0, input.indexOf(' ')));
