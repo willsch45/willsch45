@@ -32,34 +32,8 @@ public class Formula {
 		realvals = cmdsq;
 
 		realvalgenerator(Array);
-		/*
-		 * for (int idx = 0; idx < cmdsq.length(); idx++) { if
-		 * (realvals.charAt(idx) >= 65 && realvals.charAt(idx) <= 90) { if
-		 * (realvals.charAt(idx + 2) == ' ' || realvals.charAt(idx + 2) == '>')
-		 * {// i.e. A1 Cell c1 = new Cell(realvals.substring(idx, idx + 2)); idx
-		 * = 0; if (c1.h == goal.h && c1.v == goal.v) { circle = true; return; }
-		 * else { String value = Array[c1.h][c1.v].output; realvals =
-		 * realvals.substring(0, idx) + value + realvals.substring(idx + 2); } }
-		 * else {// i.e. A11 Cell c1 = new Cell(realvals.substring(idx, idx +
-		 * 3)); idx = 0; if (c1.h == goal.h && c1.v == goal.v) { circle = true;
-		 * return; } else { String value = Array[c1.h][c1.v].output; realvals =
-		 * realvals.substring(0, idx) + value + realvals.substring(idx + 3); } }
-		 * } }
-		 */
 
 		if (circle == false) {
-			/*
-			 * realvals = realvals.trim(); realvals = realvals.substring(1,
-			 * realvals.length() - 1); int terms = 1; for (int idx = 0; idx <
-			 * realvals.length(); idx++) { if (realvals.charAt(idx) == ' ') {
-			 * terms++; } }
-			 * 
-			 * String[] eqarray = new String[terms]; int counter = 0;
-			 * 
-			 * String[] temp = null;
-			 * 
-			 * temp = realvals.split(" ");
-			 */
 			String[] temp = Parserealvals();
 			result = Arraymath(temp);
 		}
@@ -96,81 +70,6 @@ public class Formula {
 
 		realvals = test;
 	}
-
-	/*
-	 * public String[] Parserealvals() { // count spaces within realvals and add
-	 * 1 for number of terms (array // length) String temp =
-	 * realvals.substring(1, realvals.length() - 1); int spcounter = 0; for (int
-	 * x = 0; x < temp.length(); x++) { if (temp.charAt(x) == ' ') {
-	 * spcounter++; } }
-	 * 
-	 * String[] arr = new String[spcounter + 1]; int idy = 0; int x = 0;
-	 * 
-	 * for (int y = 0; y < temp.length(); y++) { if (temp.charAt(y) == ' ') {
-	 * arr[x] = temp.substring(idy, y); idy = y + 1; x++; } }
-	 * 
-	 * arr[x] = temp.substring(idy);
-	 * 
-	 * return arr; }
-	 * 
-	 * public String[] multiply(int start, int end, String[] arr) { String[]
-	 * temp = new String[arr.length - 2]; double value =
-	 * Double.parseDouble(arr[start]) / Double.parseDouble(arr[end]); arr[start]
-	 * = "" + value;
-	 * 
-	 * temp = reallocate(temp, arr, start);
-	 * 
-	 * return temp; }
-	 * 
-	 * public String[] add(int start, int end, String[] arr) { String[] temp =
-	 * new String[arr.length - 2]; double value = Double.parseDouble(arr[start])
-	 * + Double.parseDouble(arr[end]); arr[start] = "" + value;
-	 * 
-	 * temp = reallocate(temp, arr, start);
-	 * 
-	 * return temp; }
-	 * 
-	 * public String[] subtract(int start, int end, String[] arr) { String[]
-	 * temp = new String[arr.length - 2]; double value =
-	 * Double.parseDouble(arr[start]) - Double.parseDouble(arr[end]); arr[start]
-	 * = "" + value;
-	 * 
-	 * temp = reallocate(temp, arr, start);
-	 * 
-	 * return temp; }
-	 * 
-	 * public String[] divide(int start, int end, String[] arr) { String[] temp
-	 * = new String[arr.length - 2]; double value =
-	 * Double.parseDouble(arr[start]) / Double.parseDouble(arr[end]); arr[start]
-	 * = "" + value;
-	 * 
-	 * temp = reallocate(temp, arr, start);
-	 * 
-	 * return temp; }
-	 * 
-	 * public String[] reallocate(String[] temp, String[] arr, int start) {
-	 * boolean afterstart = false;
-	 * 
-	 * for (int x = 0; x < temp.length; x++) { if (start < x) { afterstart =
-	 * true; } if (afterstart == false) { temp[x] = arr[x]; } else if
-	 * (afterstart = true) { temp[x] = arr[x - 2]; } }
-	 * 
-	 * return temp; }
-	 * 
-	 * public double Arraymath(String[] arr) { // multiplication and division
-	 * System.out.println("test"); for (int x = 0; x < arr.length; x++) { if
-	 * (arr[x].equals("*")) { arr = multiply(x - 1, x + 1, arr);
-	 * System.out.print(arr[x]); } else if (arr[x].equals("/")) { arr = divide(x
-	 * - 1, x + 1, arr); System.out.print(arr[x]); } }
-	 * 
-	 * for (int x = 0; x < arr.length; x++) { if (arr[x].equals("+")) { arr =
-	 * add(x - 1, x + 1, arr); } else if (arr[x].equals("-")) { arr = subtract(x
-	 * - 1, x + 1, arr); } }
-	 * 
-	 * double Final = Double.parseDouble(arr[arr.length - 1]);
-	 * 
-	 * return Final; }
-	 */
 
 	public String[] Parserealvals() {
 		// count spaces within realvals and add 1 for number of terms (array
