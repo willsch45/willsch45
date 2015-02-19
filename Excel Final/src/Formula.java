@@ -6,15 +6,6 @@ public class Formula {
 	public double result;
 	public boolean circle;
 
-	// add formula inception class
-	// run that in every formula if a cell within formula contains another
-	// formula
-	// if in dependency the input comes up again (circular reference) then stop
-	// the loop
-	// circle = true
-	// print statement
-	// rounding
-
 	public Formula(Cellobj[][] Array, String input) {
 		original = input;
 		goal = new Cell(input.substring(0, input.indexOf(' ')));
@@ -162,6 +153,8 @@ public class Formula {
 	}
 
 	public double Arraymath(String[] arr) {
+		// Honors oder of operations
+
 		// multiplication and division
 		for (int x = 0; x < arr.length; x++) {
 			if (arr[x].equals("*")) {
@@ -172,7 +165,7 @@ public class Formula {
 				x = 0;
 			}
 		}
-
+		// addition and subtraction
 		for (int x = 0; x < arr.length; x++) {
 			if (arr[x].equals("+")) {
 				arr = add(x - 1, x + 1, arr);

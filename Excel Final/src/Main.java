@@ -84,6 +84,7 @@ public class Main {
 	}
 
 	public static void print(Cellobj[][] Array) {
+		// ensures that the sizes of the cells are all the same
 		for (int vert = 0; vert < height; vert++) {
 			for (int hor = 0; hor < width; hor++) {
 				if (Array[hor][vert].output.length() == 0) {
@@ -110,6 +111,7 @@ public class Main {
 					System.out.print("|" + Array[hor][vert]);
 				}
 
+				// truncates cells which are too long and adds '>'
 				else if (Array[hor][vert].output.length() > 10) {
 					String printer = Array[hor][vert].output.substring(0, 9);
 					System.out.print("|" + printer + ">");
@@ -128,6 +130,7 @@ public class Main {
 
 		Cellobj blankcell = new Cellobj("");
 
+		// letters
 		for (int x = 0; x < width; x++) {
 
 			char name = (char) ((x - 1) + 'A');
@@ -135,7 +138,7 @@ public class Main {
 			Array[x][0] = c1;
 
 		}
-
+		// numbers
 		for (int y = 0; y < height; y++) {
 			Cellobj c2 = new Cellobj(y);
 			if (y < 10) {
@@ -156,6 +159,8 @@ public class Main {
 	}
 
 	public static void tasker(Cellobj[][] Array, String input) {
+		// determines what the task is and then passes the Array
+		// and the input to the method which does that task
 		String task = "Unknown task, check syntax of input";
 
 		if (input.contains("=") == true) {
@@ -191,7 +196,8 @@ public class Main {
 				input.indexOf(')')));
 		boolean displayincell = false;
 		Cell goal = null;
-
+		// see if there is a cell given before the equals and if not then
+		// make displayincell false and print
 		try {
 			goal = new Cell(input.substring(0, input.indexOf(' ')));
 			displayincell = true;
@@ -231,12 +237,17 @@ public class Main {
 
 		Cellobj obj;
 
+		// creates Cellobjs and puts them into the spreadsheet
+
 		if (dataTyper(Array, input) == "int") {
 			int integer = Integer.parseInt(input);
 			obj = new Cellobj(integer);
 		} else if (dataTyper(Array, input) == "date") {
 			Date d1 = new Date(input);
 			obj = new Cellobj(d1);
+		} else if (dataTyper(Array, input) == "double") {
+			double d = Double.parseDouble(input);
+			obj = new Cellobj(d);
 		} else {
 			obj = new Cellobj(input);
 		}
@@ -246,6 +257,7 @@ public class Main {
 	}
 
 	public static Cellobj[][] clear(Cellobj[][] Array, String input) {
+		// sets a given cell to a blankcell
 		Cellobj blankcell = new Cellobj("");
 		Cell c1 = new Cell(input.substring(input.indexOf('<') + 1,
 				input.indexOf('>')));
@@ -255,6 +267,7 @@ public class Main {
 	}
 
 	public static Cellobj[][] clearall(Cellobj[][] Array) {
+		// sets all cells to blankcells
 		Cellobj blankcell = new Cellobj("");
 		for (int vert = 1; vert < 14; vert++) {
 			for (int hor = 1; hor < 17; hor++) {
@@ -266,6 +279,8 @@ public class Main {
 	}
 
 	public static String dataTyper(Cellobj[][] Array, String input) {
+		// use methods which contain try loops to determine the data type
+		// return a tag which labels the data type
 		if (isint(input) == true) {
 			return "int";
 		} else if (isdouble(input) == true) {
@@ -280,18 +295,18 @@ public class Main {
 	public static boolean[] isformula(Cellobj[][] Array, String input) {
 		boolean[] conditions = { true, false };
 		// {isformula?, iscircle?}
-		// try {
-		Formula f1 = new Formula(Array, input);
-		if (f1.circle == true) {
-			conditions[1] = true;
-			return conditions;
-		} else {
+		try {// see if the formula works
+			Formula f1 = new Formula(Array, input);
+			if (f1.circle == true) {// see if there is a circular refrence
+				conditions[1] = true;
+				return conditions;
+			} else {
+				return conditions;
+			}
+		} catch (Exception err) {
+			conditions[0] = false;
 			return conditions;
 		}
-		// } catch (Exception err) {
-		// conditions[0] = false;
-		// return conditions;
-		// }
 	}
 
 	public static boolean isint(String input) {
@@ -333,11 +348,15 @@ public class Main {
 		int columns = (c2.h - c1.h) + 1;
 		int rows = (c2.v - c1.v) + 1;
 
+		// error handling
+
 		if (columns < 0 || rows < 0) {
 			System.out
 					.println("This range is unsortable for the sortd command, enter range to be sorted using sorta instead.");
 			return Array;
 		}
+
+		// count through range and put all objects into a big array then sort
 
 		double[] total = new double[(columns) * rows];
 
@@ -378,6 +397,7 @@ public class Main {
 	}
 
 	public static Cellobj[][] sorta(Cellobj[][] Array, String input) {
+		// follow procedure in sortd but return values in a different manner
 		Cell[] storage = cellrange(input);
 		Cell c1 = storage[0];
 		Cell c2 = storage[1];
@@ -386,6 +406,8 @@ public class Main {
 
 		int columns = (c2.h - c1.h) + 1;
 		int rows = (c2.v - c1.v) + 1;
+
+		// error handle
 
 		if (columns < 0 || rows < 0) {
 			System.out
@@ -434,6 +456,7 @@ public class Main {
 	}
 
 	public static double[] sort(double[] array) {
+		// sort the values like we did in class
 		for (int strtidx = 0; strtidx < array.length; strtidx++) {
 			int tryidx = strtidx;
 			for (int idx = strtidx + 1; idx < array.length; idx++) {
@@ -451,6 +474,7 @@ public class Main {
 	}
 
 	public static Cell[] cellrange(String input) {
+		// helpful bit of code for Average, sum, sort, etc...
 		Cell[] storage = new Cell[2];
 		String Cell1 = input.substring(input.indexOf('<') + 1,
 				input.indexOf('-'));
@@ -482,9 +506,7 @@ public class Main {
 		return Array;
 	}
 
-	public static void Exporter(Cellobj[][] Array, String input) {// need to ask
-																	// for user
-																	// name
+	public static void Exporter(Cellobj[][] Array, String input) {
 
 		String location = input.substring(input.indexOf('<') + 1,
 				input.indexOf('>'));
@@ -600,6 +622,10 @@ public class Main {
 	}
 
 	public static Cellobj[][] Refresh(Cellobj[][] Array) {
+		// this reevaluates all formulas and also changes all integers into
+		// double
+		// values because they are easier to work with and it allows
+		// the program to only use one kind of real value
 		for (int vert = 0; vert < height; vert++) {
 			for (int hor = 0; hor < width; hor++) {
 				if (Array[hor][vert].DataType.equals("formula")) {
