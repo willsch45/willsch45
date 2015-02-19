@@ -4,10 +4,11 @@ import java.io.PrintStream;
 import java.util.Scanner;
 
 public class Main {
-	// Add isDouble method and massage into dataTyper method
 
 	public static int width = 17;
 	public static int height = 14;
+	public static String user;
+	public static String folder;
 
 	public static void main(String[] args) {
 
@@ -17,6 +18,12 @@ public class Main {
 		print(Array);
 
 		Scanner scan = new Scanner(System.in);
+
+		System.out.println("User name?");
+		user = scan.nextLine();
+
+		System.out.println("Save location?");
+		folder = scan.nextLine();
 
 		System.out.println("Auto-execute from file? (Yes/No)");
 		String answer = scan.nextLine();
@@ -42,12 +49,13 @@ public class Main {
 			scan.close();
 
 		} else if (answer.equalsIgnoreCase("Yes")) {
-			System.out.println("Enter file location");
+			System.out.println("Enter file location:");
 			String location = scan.nextLine();
 
-			File f = new File("c:\\Users\\Will Schober\\Desktop\\" + location
-					+ ".txt");
+			File f = new File("c:\\Users\\" + user + "\\" + folder + "\\"
+					+ location + ".txt");
 			Scanner s;
+
 			try {
 				s = new Scanner(f);
 				System.out.println(f);
@@ -160,7 +168,7 @@ public class Main {
 				Cellcontents(Array, input);
 			}
 		} else if (input.contains("clear") == true) {
-			if (input.indexOf('<') == -1 && input.indexOf('(') != -1) {
+			if (input.indexOf('<') != -1) {
 				clear(Array, input);
 			} else {
 				clearall(Array);
@@ -325,6 +333,12 @@ public class Main {
 		int columns = (c2.h - c1.h) + 1;
 		int rows = (c2.v - c1.v) + 1;
 
+		if (columns < 0 || rows < 0) {
+			System.out
+					.println("This range is unsortable for the sortd command, enter range to be sorted using sorta instead.");
+			return Array;
+		}
+
 		double[] total = new double[(columns) * rows];
 
 		for (int idx = 0; idx <= columns - 1; idx++) {
@@ -372,6 +386,12 @@ public class Main {
 
 		int columns = (c2.h - c1.h) + 1;
 		int rows = (c2.v - c1.v) + 1;
+
+		if (columns < 0 || rows < 0) {
+			System.out
+					.println("This range is unsortable for the sorta command, enter range to be sorted using sortd instead.");
+			return Array;
+		}
 
 		double[] total = new double[(columns) * rows];
 
@@ -469,8 +489,8 @@ public class Main {
 		String location = input.substring(input.indexOf('<') + 1,
 				input.indexOf('>'));
 
-		File f = new File("c:\\Users\\Will Schober\\Desktop\\" + location
-				+ ".txt");
+		File f = new File("c:\\Users\\" + user + "\\" + folder + "\\"
+				+ location + ".txt");
 		PrintStream p;
 		try {
 			p = new PrintStream(f);
@@ -535,8 +555,8 @@ public class Main {
 
 		String location = input.substring(input.indexOf('<') + 1,
 				input.indexOf('>'));
-		File f = new File("c:\\Users\\Will Schober\\Desktop\\" + location
-				+ ".txt");
+		File f = new File("c:\\Users\\" + user + "\\" + folder + "\\"
+				+ location + ".txt");
 		Scanner s;
 		try {
 			s = new Scanner(f);
