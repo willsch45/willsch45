@@ -1,0 +1,55 @@
+Chapter One Exercises
+Exercise Set 1:
+1. yes
+2. no
+
+Analysis Question Set 1:
+1. The body of water is modeled as a rectangle of given proportions within the file the grid lines represent spaces that can be inhabited by the fish
+2. The fish can be only within the given grid lines and two fish cannot inhabit the same location in the grid
+3. No all fish do not face the same direction and the direction is important because they cannot move backward (opposite to thte way that they are facing)
+4. It does move every step and it only moves one space each time.  It does not always move in the same direction, it can move forward or to the left and right but never backwards.  The fish do not seem likely to move in any direction (except backwards) with more frequency than other directions.
+
+Exercise Set 2:
+Coordinates with the origin being in the lower left (I didn't notice you could see the location by hovering over the fish)
+1.	Timestep	Fish's location		Fish's Direction	Did it move?	In what direction?	New location	New direction
+	1			3, 4				Up					Yes				Up					3, 5			Up
+	2			3, 5				Up					Yes				To the Left			2, 5			Left
+	3			2, 5				Left				Yes				Down				2, 4			Down
+	4			2, 4				Down				Yes				To the Left			1, 4			Left
+	5			1, 4				Left				Yes				Down				1, 3			Down
+
+
+2.
+
+Analysis Question Set 2:
+1.
+2.	Timestep	Fish's location		Fish's Direction	Did it move?	In what direction?	New location	New direction
+	1			3, 4				Up					Yes				Up					3, 5			Up
+	2			3, 5				Up					Yes				Up					3, 6			Up
+	3			3, 6				Up					Yes				Left				2, 6			Left
+	4			2, 6				Left				Yes				Left				1, 6			Left
+	5			1, 6				Left				Yes				Up					1, 7			Up
+	6			1, 7				Up					Yes				Right				2, 7			Right
+	7			2, 7				Right				Yes				Down				2, 6			Down
+	8			2, 6				Down				Yes				Down				2, 5			Down
+	9			2, 5				Down				Yes				Right				3, 5			Right
+	10			3, 5				Right				Yes				Down				3, 4			Down
+	11			3, 4				Down	`			Yes				Left				2, 4			Left
+	12			2, 4				Left				Yes				Up					2, 5			Up
+	13			2, 5				Up					Yes				Up 					2, 6			Up
+	14			2, 6				Up					Yes				Up					2, 7			Up
+	15			2, 7				Up					Yes				Left				1, 7			Left
+	16			1, 7				Left				Yes				Down				1, 6			Down
+	17			1, 6				Down				Yes				Right				2, 6			Right
+	18			2, 6				Right				Yes				Up					2, 7			Up
+	19			2, 7				Up					Yes				Right				3, 7			Right
+	20			3, 7 				Right				Yes				Right				4, 7			Right
+
+Analysis Question Set 3:
+1. Based on this, I can determine that the first number determines the row the fish occupies and the second denotes the column.
+
+Exercise Set 3:
+1. After observing the other .dat files we can see that the dimensions of the environments change along with the starting directions of all the fish but the movement of each fish appears to be constant.
+2. I kept the same dimensions as onefish.dat but I added multiple other fish which all moved the same way that the one fish did.  They never collided and never went backward so I created an environment where a line of fish faced another line of fish and they couldn't move.
+
+UOPLOAD THE DATA FILE THAT YOU MAKE FOR THE LAST PROBLEM TO YOUR GIT REPOSITORY.
