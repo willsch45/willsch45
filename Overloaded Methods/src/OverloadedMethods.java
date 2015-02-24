@@ -40,46 +40,10 @@ public class OverloadedMethods {
 		return newArray;
 	}
 
-	public static void Sort(int[] values) {
-		if (values != null) {
-			for (int position = 0; position < values.length; position++) {
-				int positionOfLargest = position;
-				int currentPositionValue = values[position];
-
-				for (int positionToRight = position + 1; positionToRight < values.length; positionToRight++) {
-					if (values[positionToRight] < currentPositionValue) {
-						positionOfLargest = positionToRight;
-					}
-				}
-
-				values[position] = values[positionOfLargest];
-				values[positionOfLargest] = currentPositionValue;
-			}
-		}
-	}
-
-	public static void Sort(double[] values) {
-		if (values != null) {
-			for (int position = 0; position < values.length; position++) {
-				int positionOfLargest = position;
-				double currentPositionValue = values[position];
-
-				for (int positionToRight = position + 1; positionToRight < values.length; positionToRight++) {
-					if (values[positionToRight] < currentPositionValue) {
-						positionOfLargest = positionToRight;
-					}
-				}
-
-				values[position] = values[positionOfLargest];
-				values[positionOfLargest] = currentPositionValue;
-			}
-		}
-	}
-
 	public static double Mean(int[] values) {
 		// don't want to change original array, so make a copy before sorting
 		int[] copy = Copy(values);
-		Sort(copy);
+		sort(copy);
 
 		int sum = 0;
 		for (int position = 0; position < copy.length; position++) {
@@ -96,7 +60,7 @@ public class OverloadedMethods {
 	public static double Mean(double[] values) {
 		// don't want to change original array, so make a copy before sorting
 		double[] copy = Copy(values);
-		Sort(copy);
+		sort(copy);
 
 		double sum = 0;
 		for (int position = 0; position < copy.length; position++) {
@@ -114,7 +78,7 @@ public class OverloadedMethods {
 		int median = 0;
 
 		int[] copy = Copy(values);
-		Sort(copy);
+		sort(copy);
 		int distance;
 
 		if (values.length % 2 == 0) {
@@ -132,7 +96,7 @@ public class OverloadedMethods {
 		double median = 0;
 
 		double[] copy = Copy(values);
-		Sort(copy);
+		sort(copy);
 		int distance;
 
 		if (values.length % 2 == 0) {
@@ -148,6 +112,8 @@ public class OverloadedMethods {
 
 	public static int Mode(int[] values) {
 		int[] counterarr = new int[values.length];
+		int[] copy = Copy(values);
+		sort(copy);
 
 		for (int x = 0; x < values.length; x++) {
 			int test = values[x];
@@ -172,6 +138,8 @@ public class OverloadedMethods {
 
 	public static double Mode(double[] values) {
 		int[] counterarr = new int[values.length];
+		double[] copy = Copy(values);
+		sort(copy);
 
 		for (int x = 0; x < values.length; x++) {
 			double test = values[x];
@@ -192,5 +160,39 @@ public class OverloadedMethods {
 		}
 
 		return values[start];
+	}
+
+	public static double[] sort(double[] array) {
+		for (int strtidx = 0; strtidx < array.length; strtidx++) {
+			int tryidx = strtidx;
+			for (int idx = strtidx + 1; idx < array.length; idx++) {
+				if (array[idx] > array[tryidx]) {
+					tryidx = idx;
+				}
+			}
+
+			double tmp = array[strtidx];
+			array[strtidx] = array[tryidx];
+			array[tryidx] = tmp;
+		}
+
+		return array;
+	}
+
+	public static int[] sort(int[] array) {
+		for (int strtidx = 0; strtidx < array.length; strtidx++) {
+			int tryidx = strtidx;
+			for (int idx = strtidx + 1; idx < array.length; idx++) {
+				if (array[idx] > array[tryidx]) {
+					tryidx = idx;
+				}
+			}
+
+			int tmp = array[strtidx];
+			array[strtidx] = array[tryidx];
+			array[tryidx] = tmp;
+		}
+
+		return array;
 	}
 }

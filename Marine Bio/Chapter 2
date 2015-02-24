@@ -1,0 +1,6 @@
+Chapter Two Exercises
+Analysis Question Set 1:
+1. The step method goes through all the fish in the environment (which are contained in an array) and makes them all move one step.  It gets enough information for this because the fish class passes to the environment class which finally passes to the simulation class, giving the driver the necessary information to perform the step function.
+2. Demo1 does not use the simulation object while Demo2 does use a simulation object.  Demo1 just steps all of the fish whereas Demo2 does not.
+
+Analysis Question Set 2:
